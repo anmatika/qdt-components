@@ -27,45 +27,69 @@ const QdtSelectionToolbar = ({ qLayout, clearSelections, update }) => {
   }
 
   const toggle = (index) => {
-    dropdownOpen[index] = !(dropdownOpen[index]);
+    dropdownOpen[index] = !dropdownOpen[index];
     update();
   };
 
   return (
     <div className="qdt-selection-toolbar">
       <ul>
-        <li><strong>SELECTIONS:</strong></li>
-        {selections.length === 0 &&
-        <li className="no-selections">None</li>
-        }
-        {selections.length >= 1 && selections.length <= 6 &&
-            selections.map((value, index) => {
-                if (value.selected.length === 1) {
-                    return <li key={value.field}>{value.field}: {value.selected[0]}<span className="lui-icon lui-icon--remove" onClick={() => clearSelections(value.field)} role="button" tabIndex={0} /></li>;
-                }
-                    return (
-                      <li key={value.field}>
-                        <ButtonDropdown
-                          isOpen={dropdownOpen[index]}
-                          toggle={() => toggle(index)}
-                        >
-                          <DropdownToggle>
-                            {value.field}: {value.selected.length} of {value.total}
-                            <span className="lui-icon lui-icon--triangle-bottom" />
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            {value.selected.map(value2 => <DropdownItem key={value2}>{value2}<span className="lui-icon lui-icon--remove pull-right" onClick={() => clearSelections(value.field, value2)} role="button" tabIndex={0} /></DropdownItem>)}
-                          </DropdownMenu>
-                        </ButtonDropdown>
-                      </li>
-                    );
-            })
-        }
-        {selections.length >= 1 && selections.length <= 6 &&
-        <li><button className="lui-button lui-button--warning clear-all" onClick={() => clearSelections()} tabIndex={0}>Clear All</button></li>
-        }
+        {selections.length === 0 && <li className="no-selections">None</li>}
+        {selections.length >= 1 &&
+          selections.length <= 6 &&
+          selections.map((value, index) => {
+            if (value.selected.length === 1) {
+              return (
+                <li key={value.field}>
+                  {value.field}: {value.selected[0]}
+                  <span
+                    className="lui-icon lui-icon--remove"
+                    onClick={() => clearSelections(value.field)}
+                    role="button"
+                    tabIndex={0}
+                  />
+                </li>
+              );
+            }
+            return (
+              <li key={value.field}>
+                <ButtonDropdown isOpen={dropdownOpen[index]} toggle={() => toggle(index)}>
+                  <DropdownToggle>
+                    {value.field}: {value.selected.length} of {value.total}
+                    <span className="lui-icon lui-icon--triangle-bottom" />
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {value.selected.map(value2 => (
+                      <DropdownItem key={value2}>
+                        {value2}
+                        <span
+                          className="lui-icon lui-icon--remove pull-right"
+                          onClick={() => clearSelections(value.field, value2)}
+                          role="button"
+                          tabIndex={0}
+                        />
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </li>
+            );
+          })}
+        {selections.length >= 1 &&
+          selections.length <= 6 && (
+            <li>
+              <button
+                className="lui-button lui-button--warning clear-all"
+                onClick={() => clearSelections()}
+                tabIndex={0}
+              >
+                Clear All
+              </button>
+            </li>
+          )}
       </ul>
-    </div>);
+    </div>
+  );
 };
 QdtSelectionToolbar.propTypes = {
   qLayout: PropTypes.object.isRequired,
