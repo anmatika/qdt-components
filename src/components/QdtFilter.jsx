@@ -109,7 +109,7 @@ class QdtFilterComponent extends React.Component {
     return (
       <Dropdown className="d-inline-block" isOpen={dropdownOpen} toggle={toggle}>
         <DropdownToggle color="secondary" caret>
-          Dropdown
+          Dropdown!
         </DropdownToggle>
         <DropdownMenu style={{ width: '15rem' }}>
           <Input
