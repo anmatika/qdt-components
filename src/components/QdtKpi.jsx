@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import withHyperCube from './withHyperCube';
 import '../styles/index.scss';
 
-const QdtKpiComponent = ({ qData }) => {
-  const value = qData.qMatrix[0][0].qText;
-  return <div className="qtd-kpi">{value}</div>;
-};
+const QdtKpiComponent = ({ qData }) => (
+  <div className="qtd-kpi">{qData.qMatrix[0][0].qText}</div>
+);
 QdtKpiComponent.propTypes = {
   qData: PropTypes.object.isRequired,
 };

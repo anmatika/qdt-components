@@ -1,28 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import autobind from 'autobind-decorator';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
-import withListObject from './withListObject';
-import QdtVirtualScroll from './QdtVirtualScroll';
-import '../styles/index.scss';
+import React from "react";
+import PropTypes from "prop-types";
+import autobind from "autobind-decorator";
+import { LuiDropdown, LuiList, LuiListItem, LuiSearch } from "qdt-lui";
+import withListObject from "./withListObject";
+import QdtVirtualScroll from "./QdtVirtualScroll";
+import "../styles/index.scss";
 
 const DropdownItemList = ({ qMatrix, rowHeight, select }) => (
   <span>
-    {qMatrix.map(row =>
-      (
-        <DropdownItem
-          className={`border border-light border-left-0 border-right-0 ${row[0].qState}`}
-          key={row[0].qElemNumber}
-          data-q-elem-number={row[0].qElemNumber}
-          toggle={false}
-          onClick={select}
-          style={{ height: `${rowHeight}px` }}
-        >
-          {row[0].qText}
-        </DropdownItem>
-      ))}
+    {qMatrix.map(row => (
+      <LuiListItem
+        className={`${row[0].qState}`}
+        key={row[0].qElemNumber}
+        data-q-elem-number={row[0].qElemNumber}
+        data-q-state={row[0].qState}
+        onClick={select}
+        style={{ height: `${rowHeight - 1}px` }}
+      >
+        {row[0].qText}
+      </LuiListItem>
+    ))}
   </span>
 );
+
 DropdownItemList.propTypes = {
   qMatrix: PropTypes.array.isRequired,
   rowHeight: PropTypes.number.isRequired,
@@ -31,14 +31,18 @@ DropdownItemList.propTypes = {
 
 const StateCountsBar = ({ qStateCounts }) => {
   const totalStateCounts = Object.values(qStateCounts).reduce((a, b) => a + b);
-  const fillWidth = `${((qStateCounts.qOption + qStateCounts.qSelected) * 100) / totalStateCounts}%`;
-  const barStyle = { position: 'relative', height: '0.25rem' };
+  const fillWidth = `${(qStateCounts.qOption + qStateCounts.qSelected) * 100 / totalStateCounts}%`;
+  const barStyle = { position: "relative", height: "0.25rem", backgroundColor: "#ddd" };
   const fillStyle = {
-    position: 'absolute', width: fillWidth, height: '100%', transition: 'width .6s ease',
+    position: "absolute",
+    width: fillWidth,
+    height: "100%",
+    backgroundColor: "#52CC52",
+    transition: "width .6s ease",
   };
   return (
-    <div className="bg-qalternative" style={barStyle}>
-      <div className="bg-qselected" style={fillStyle} />
+    <div style={barStyle}>
+      <div style={fillStyle} />
     </div>
   );
 };
@@ -56,79 +60,90 @@ class QdtFilterComponent extends React.Component {
     endSelections: PropTypes.func.isRequired,
     searchListObjectFor: PropTypes.func.isRequired,
     acceptListObjectSearch: PropTypes.func.isRequired,
-  }
+    single: PropTypes.bool,
+  };
+  static defaultProps = {
+    single: false,
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
       dropdownOpen: false,
-      searchListInputValue: '',
+      searchListInputValue: "",
     };
   }
 
   @autobind
   toggle() {
-    this.props.offset(0);
-
-    if (!this.state.dropdownOpen) {
-      this.props.beginSelections();
-    }
-    if (this.state.dropdownOpen) {
-      this.props.endSelections(true);
-    }
-
-    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+    this.setState({ dropdownOpen: !this.state.dropdownOpen }, () => {
+      if (this.state.dropdownOpen) {
+        this.props.beginSelections();
+      }
+      if (!this.state.dropdownOpen) {
+        this.props.endSelections(true);
+        this.clear();
+      }
+    });
   }
 
   @autobind
-  select(e) {
-    this.props.select(Number(e.target.dataset.qElemNumber));
+  select(event) {
+    const { qElemNumber, qState } = event.currentTarget.dataset;
+    if (qState === "S") {
+      this.props.select(Number(qElemNumber));
+    } else {
+      this.props.select(Number(qElemNumber), !this.props.single);
+    }
+  }
+
+  @autobind
+  clear() {
+    this.setState({ searchListInputValue: "" });
+    this.props.searchListObjectFor("");
   }
 
   @autobind
   searchListObjectFor(event) {
     this.setState({ searchListInputValue: event.target.value });
+    this.props.offset(0);
     this.props.searchListObjectFor(event.target.value);
   }
 
   @autobind
   acceptListObjectSearch(event) {
     if (event.charCode === 13) {
-      this.setState({ searchListInputValue: '' });
+      this.setState({ searchListInputValue: "" });
       this.props.acceptListObjectSearch();
     }
   }
 
   render() {
-    const {
-      select, toggle, searchListObjectFor, acceptListObjectSearch,
-    } = this;
     const { qData, qLayout, offset } = this.props;
     const { dropdownOpen, searchListInputValue } = this.state;
     return (
-      <Dropdown className="d-inline-block" isOpen={dropdownOpen} toggle={toggle}>
-        <DropdownToggle color="secondary" caret>
-          Dropdown!
-        </DropdownToggle>
-        <DropdownMenu style={{ width: '15rem' }}>
-          <Input
+      <LuiDropdown isOpen={dropdownOpen} toggle={this.toggle}>
+        Dropdown
+        <LuiList style={{ width: "15rem" }}>
+          <LuiSearch
             value={searchListInputValue}
-            onChange={searchListObjectFor}
-            onKeyPress={acceptListObjectSearch}
+            clear={this.clear}
+            onChange={this.searchListObjectFor}
+            onKeyPress={this.acceptListObjectSearch}
           />
           <QdtVirtualScroll
             qData={qData}
             qcy={qLayout.qListObject.qSize.qcy}
             Component={DropdownItemList}
-            componentProps={{ select }}
+            componentProps={{ select: this.select }}
             offset={offset}
-            rowHeight={34}
-            viewportHeight={170}
+            rowHeight={38}
+            viewportHeight={190}
           />
-        </DropdownMenu>
+        </LuiList>
         <StateCountsBar qStateCounts={qLayout.qListObject.qDimensionInfo.qStateCounts} />
-      </Dropdown>
+      </LuiDropdown>
     );
   }
 }
@@ -139,6 +154,7 @@ QdtFilter.propTypes = {
   cols: PropTypes.array,
   qListObjectDef: PropTypes.object,
   qPage: PropTypes.object,
+  single: PropTypes.bool,
 };
 QdtFilter.defaultProps = {
   cols: null,
@@ -149,6 +165,7 @@ QdtFilter.defaultProps = {
     qWidth: 1,
     qHeight: 100,
   },
+  single: false,
 };
 
 export default QdtFilter;

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Preloader from '../utilities/Preloader';
 
 export default class QdtViz extends React.Component {
   static propTypes = {
@@ -8,8 +9,11 @@ export default class QdtViz extends React.Component {
     type: PropTypes.oneOf([null, 'barchart', 'boxplot', 'combochart', 'distributionplot', 'gauge', 'histogram', 'kpi', 'linechart', 'piechart', 'pivot-table', 'scatterplot', 'table', 'treemap', 'extension']),
     cols: PropTypes.array,
     options: PropTypes.object,
+    noSelections: PropTypes.bool,
     width: PropTypes.string,
     height: PropTypes.string,
+    minWidth: PropTypes.string,
+    minHeight: PropTypes.string,
   }
 
   static defaultProps = {
@@ -17,8 +21,11 @@ export default class QdtViz extends React.Component {
     type: null,
     cols: [],
     options: {},
+    noSelections: false,
     width: '100%',
     height: '100%',
+    minWidth: 'auto',
+    minHeight: 'auto',
   }
 
   constructor(props) {
@@ -76,7 +83,7 @@ export default class QdtViz extends React.Component {
       const qViz = await this.qVizPromise;
       if (qViz) {
         await this.setState({ loading: false });
-        qViz.show(this.node);
+        qViz.show(this.node, { noSelections: this.props.noSelections });
       } else {
         throw new Error('Please specify a qConfig global variable');
       }
@@ -100,12 +107,21 @@ export default class QdtViz extends React.Component {
   }
 
   render() {
+    const {
+      width, height, minWidth, minHeight,
+    } = this.props;
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
     } else if (this.state.loading) {
-      return <div>Loading...</div>;
+    //   return <div>Loading...</div>;
+      const paddingTop = (parseInt(height, 0)) ? (height / 2) - 10 : 0;
+      return <Preloader width={width} height={height} paddingTop={paddingTop} />;
     }
-    const { width, height } = this.props;
-    return <div ref={(node) => { this.node = node; }} style={{ width, height }} />;
+    return (<div
+      ref={(node) => { this.node = node; }}
+      style={{
+ width, height, minWidth, minHeight,
+}}
+    />);
   }
 }

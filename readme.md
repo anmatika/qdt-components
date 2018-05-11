@@ -1,6 +1,6 @@
 ![Banner](assets/banner_3technologies.jpg "Banner") 
 
-[![version](http://img.shields.io/badge/version-1.0.2-brightgreen.svg?style=plastic)]()
+[![version](http://img.shields.io/badge/version-1.1.7-brightgreen.svg?style=plastic)]()
 
 # Qlik Demo Team Components
 
@@ -161,7 +161,8 @@ This populated a toolbar with the current app selections.
 
 | prop             | type          | description   |
 | ---------------- | ------------- | ------------- |
-| height           | String        | Sets object height |
+| title            | String        | `SELECTIONS`  |
+| btnText          | String        | `Clear All `  |
 
 #### QdtBarchart
 This creates a barchart based on [Picasso.js](https://picassojs.com/).
@@ -175,13 +176,26 @@ This creates a barchart based on [Picasso.js](https://picassojs.com/).
 | width            | String        | Sets width of viz, default 100% |
 | height           | String        | Sets height of viz, default 100% |
 
-### Changelog ###
+#### QdtPicasso - lineChart
+This creates a Line Chart based on [Picasso.js](https://picassojs.com/).
+* [Live Example](https://webapps.qlik.com/qdt-components/react/index.html#/picasso-line-chart).
 
-##### 1.1.6 #####
-* Minor fixes for the Horizontal Barchart and the Selection Toolbar
+| prop             | type          | description   |
+| ---------------- | ------------- | ------------- |
+| type             | String        | `lineChart` |
+| cols             | Array         | `[dimension, measure]` |
+| options          | Object        | `color` |
 
-##### 1.1.5 #####
-* Add Picasso Horizontal Barchart
+#### QdtSearch
+This creates a search input field based on [Leonardo UI - input](https://qlik-oss.github.io/leonardo-ui/input.html).
+* Tooltips are also based on [Leonardo UI - Tooltip](https://qlik-oss.github.io/leonardo-ui/tooltip.html)
+* [Live Example](https://webapps.qlik.com/qdt-components/react/index.html#/search).
 
-##### 1.1.4 #####
-* Fix the Selection Toolbar
+| prop             | type          | description   |
+| ---------------- | ------------- | ------------- |
+| cols             | Array         | `[dimension]` |
+| invert           | Boolean       | false         |
+| placeholder      | String        | `Search for`  |
+| tooltipDock      | String        | `'top', 'right', 'bottom', 'left' `|
+| tooltipContent   | String        | `<h5>Tooltip Header</h5> more content here.` |
+| showGo           | Boolean       | false         |
