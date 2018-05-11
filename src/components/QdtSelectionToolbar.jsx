@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import autobind from "autobind-decorator";
-import { LuiDropdown } from "qdt-lui";
-import withSelectionObject from "./withSelectionObject";
-import "../styles/index.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
+import { LuiDropdown } from 'qdt-lui';
+import withSelectionObject from './withSelectionObject';
+import '../styles/index.scss';
 
 class QdtSelectionToolbarDropdown extends React.Component {
   static propTypes = {
@@ -46,11 +46,13 @@ class QdtSelectionToolbarDropdown extends React.Component {
   }
 }
 
-const QdtSelectionToolbar = ({ qLayout, clearSelections, title, btnText }) => {
+const QdtSelectionToolbar = ({
+  qLayout, clearSelections, title, btnText,
+}) => {
   const selectedFields = qLayout.qSelectionObject.qSelections;
   let selections = [];
   if (selectedFields.length) {
-    selections = selectedFields.map(value => {
+    selections = selectedFields.map((value) => {
       if (value.qSelectedCount >= 1 && value.qSelectedCount <= 6) {
         return {
           field: value.qField,
@@ -76,7 +78,7 @@ const QdtSelectionToolbar = ({ qLayout, clearSelections, title, btnText }) => {
         {selections.length === 0 && <li className="no-selections">None</li>}
         {selections.length >= 1 &&
           selections.length <= 6 &&
-          selections.map(value => {
+          selections.map((value) => {
             if (value.selected.length === 1) {
               return (
                 <li key={value.field}>
@@ -119,8 +121,8 @@ QdtSelectionToolbar.propTypes = {
   btnText: PropTypes.string,
 };
 QdtSelectionToolbar.defaultProps = {
-  title: "SELECTIONS",
-  btnText: "Clear All",
+  title: 'SELECTIONS',
+  btnText: 'Clear All',
 };
 
 const QdtSelectionToolbarObject = withSelectionObject(QdtSelectionToolbar);
@@ -132,7 +134,7 @@ QdtSelectionToolbarObject.propTypes = {
 };
 QdtSelectionToolbarObject.defaultProps = {
   cols: [],
-  options: { qType: "SelectionObject" },
+  options: { qType: 'SelectionObject' },
   qPage: {
     qTop: 0,
     qLeft: 0,

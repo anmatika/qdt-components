@@ -1,10 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import autobind from "autobind-decorator";
-import { LuiDropdown, LuiList, LuiListItem, LuiSearch } from "qdt-lui";
-import withListObject from "./withListObject";
-import QdtVirtualScroll from "./QdtVirtualScroll";
-import "../styles/index.scss";
+/* eslint-disable no-mixed-operators */
+import React from 'react';
+import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
+import { LuiDropdown, LuiList, LuiListItem, LuiSearch } from 'qdt-lui';
+import withListObject from './withListObject';
+import QdtVirtualScroll from './QdtVirtualScroll';
+import '../styles/index.scss';
 
 const DropdownItemList = ({ qMatrix, rowHeight, select }) => (
   <span>
@@ -32,13 +33,13 @@ DropdownItemList.propTypes = {
 const StateCountsBar = ({ qStateCounts }) => {
   const totalStateCounts = Object.values(qStateCounts).reduce((a, b) => a + b);
   const fillWidth = `${(qStateCounts.qOption + qStateCounts.qSelected) * 100 / totalStateCounts}%`;
-  const barStyle = { position: "relative", height: "0.25rem", backgroundColor: "#ddd" };
+  const barStyle = { position: 'relative', height: '0.25rem', backgroundColor: '#ddd' };
   const fillStyle = {
-    position: "absolute",
+    position: 'absolute',
     width: fillWidth,
-    height: "100%",
-    backgroundColor: "#52CC52",
-    transition: "width .6s ease",
+    height: '100%',
+    backgroundColor: '#52CC52',
+    transition: 'width .6s ease',
   };
   return (
     <div style={barStyle}>
@@ -71,7 +72,7 @@ class QdtFilterComponent extends React.Component {
 
     this.state = {
       dropdownOpen: false,
-      searchListInputValue: "",
+      searchListInputValue: '',
     };
   }
 
@@ -91,7 +92,7 @@ class QdtFilterComponent extends React.Component {
   @autobind
   select(event) {
     const { qElemNumber, qState } = event.currentTarget.dataset;
-    if (qState === "S") {
+    if (qState === 'S') {
       this.props.select(Number(qElemNumber));
     } else {
       this.props.select(Number(qElemNumber), !this.props.single);
@@ -100,8 +101,8 @@ class QdtFilterComponent extends React.Component {
 
   @autobind
   clear() {
-    this.setState({ searchListInputValue: "" });
-    this.props.searchListObjectFor("");
+    this.setState({ searchListInputValue: '' });
+    this.props.searchListObjectFor('');
   }
 
   @autobind
@@ -114,7 +115,7 @@ class QdtFilterComponent extends React.Component {
   @autobind
   acceptListObjectSearch(event) {
     if (event.charCode === 13) {
-      this.setState({ searchListInputValue: "" });
+      this.setState({ searchListInputValue: '' });
       this.props.acceptListObjectSearch();
     }
   }
@@ -125,7 +126,7 @@ class QdtFilterComponent extends React.Component {
     return (
       <LuiDropdown isOpen={dropdownOpen} toggle={this.toggle}>
         Dropdown
-        <LuiList style={{ width: "15rem" }}>
+        <LuiList style={{ width: '15rem' }}>
           <LuiSearch
             value={searchListInputValue}
             clear={this.clear}
