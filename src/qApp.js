@@ -1,6 +1,6 @@
 const loadCapabilityApis = async (config) => {
   try {
-    console.log('loadCapabilityApis', config.host, config.port);
+    /*     console.log('loadCapabilityApis', config.host, config.port); */
     const capabilityApisJS = document.createElement('script');
     const prefix = config.prefix !== '' ? `/${config.prefix}` : '';
     capabilityApisJS.src = `${(config.secure ? 'https://' : 'http://') +
@@ -8,7 +8,7 @@ const loadCapabilityApis = async (config) => {
       (config.port ? `:${config.port}` : '') +
       prefix}/resources/assets/external/requirejs/require.js`;
 
-    console.log('loadCapabilityApis.src', capabilityApisJS.src);
+    /*     console.log('loadCapabilityApis.src', capabilityApisJS.src); */
     document.head.appendChild(capabilityApisJS);
     capabilityApisJS.loaded = new Promise((resolve) => {
       capabilityApisJS.onload = () => {
@@ -55,6 +55,7 @@ const qApp = async (config) => {
       window.require(['js/qlik'], (qlik) => {
         console.log('qlik', qlik);
         const app = qlik.openApp(config.appId, { ...config, isSecure: config.secure, prefix });
+        app.qlik = qlik;
         resolve(app);
       });
     });
