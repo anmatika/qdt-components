@@ -38,7 +38,6 @@ const qApp = async (config) => {
   try {
     await loadCapabilityApis(config);
     const prefix = config.prefix !== '' ? `/${config.prefix}/` : '/';
-    console.log('loadCapabilityApis', 'window.require: ', window.require);
     window.require.config({
       baseUrl: `${(config.secure ? 'https://' : 'http://') +
         config.host +
