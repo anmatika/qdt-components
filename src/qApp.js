@@ -52,7 +52,7 @@ const qApp = async (config) => {
     });
     return new Promise((resolve) => {
       window.require(['js/qlik'], (qlik) => {
-        qlik.theme.apply('theme-sievo').then((result) => {
+        qlik.theme.apply('breeze').then((result) => {
           if (result) console.log('theme applied!');
           else console.warn('could not apply theme!');
         });
