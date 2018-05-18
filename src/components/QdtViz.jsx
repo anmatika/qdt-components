@@ -1,3 +1,4 @@
+/* eslint no-console: 0, no-mixed-operators: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Preloader from '../utilities/Preloader';
@@ -6,7 +7,23 @@ export default class QdtViz extends React.Component {
   static propTypes = {
     qAppPromise: PropTypes.object.isRequired,
     id: PropTypes.string,
-    type: PropTypes.oneOf([null, 'barchart', 'boxplot', 'combochart', 'distributionplot', 'gauge', 'histogram', 'kpi', 'linechart', 'piechart', 'pivot-table', 'scatterplot', 'table', 'treemap', 'extension']),
+    type: PropTypes.oneOf([
+      null,
+      'barchart',
+      'boxplot',
+      'combochart',
+      'distributionplot',
+      'gauge',
+      'histogram',
+      'kpi',
+      'linechart',
+      'piechart',
+      'pivot-table',
+      'scatterplot',
+      'table',
+      'treemap',
+      'extension',
+    ]),
     cols: PropTypes.array,
     options: PropTypes.object,
     noSelections: PropTypes.bool,
@@ -14,7 +31,7 @@ export default class QdtViz extends React.Component {
     height: PropTypes.string,
     minWidth: PropTypes.string,
     minHeight: PropTypes.string,
-  }
+  };
 
   static defaultProps = {
     id: null,
@@ -26,7 +43,7 @@ export default class QdtViz extends React.Component {
     height: '100%',
     minWidth: 'auto',
     minHeight: 'auto',
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -52,6 +69,7 @@ export default class QdtViz extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log('QdtViz.componentWillUnmount');
     this.close();
   }
 
@@ -96,6 +114,7 @@ export default class QdtViz extends React.Component {
     try {
       const qViz = await this.qVizPromise;
       qViz.close();
+      console.log('qViz.close');
     } catch (error) {
       this.setState({ error });
     }
@@ -113,15 +132,22 @@ export default class QdtViz extends React.Component {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
     } else if (this.state.loading) {
-    //   return <div>Loading...</div>;
-      const paddingTop = (parseInt(height, 0)) ? (height / 2) - 10 : 0;
+      //   return <div>Loading...</div>;
+      const paddingTop = parseInt(height, 0) ? height / 2 - 10 : 0;
       return <Preloader width={width} height={height} paddingTop={paddingTop} />;
     }
-    return (<div
-      ref={(node) => { this.node = node; }}
-      style={{
- width, height, minWidth, minHeight,
-}}
-    />);
+    return (
+      <div
+        ref={(node) => {
+          this.node = node;
+        }}
+        style={{
+          width,
+          height,
+          minWidth,
+          minHeight,
+        }}
+      />
+    );
   }
 }
