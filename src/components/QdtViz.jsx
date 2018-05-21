@@ -55,12 +55,10 @@ export default class QdtViz extends React.Component {
   }
 
   componentWillMount() {
-    console.log('QdtViz.componentWillMount');
     this.qVizPromise = this.create();
   }
 
   componentDidMount() {
-    console.log('QdtViz.componentDidMount');
     this.show();
   }
 
