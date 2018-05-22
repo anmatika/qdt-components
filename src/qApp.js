@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: 0 */
 const loadCapabilityApis = async (config) => {
   try {
     /*     console.log('loadCapabilityApis', config.host, config.port); */
@@ -48,6 +49,20 @@ const qApp = async (config) => {
           config.host +
           (config.port ? `:${config.port}` : '') +
           prefix}resources/js/qlik`,
+      },
+      text: {
+        useXhr(url, protocol, hostname, port) {
+          // Override function for determining if XHR should be used.
+          // url: the URL being requested
+          // protocol: protocol of page text.js is running on
+          // hostname: hostname of page text.js is running on
+          // port: port of page text.js is running on
+          // Use protocol, hostname, and port to compare against the url
+          // being requested.
+          // Return true or false. true means "use xhr", false means
+          // "fetch the .js version of this resource".
+          return true;
+        },
       },
     });
     return new Promise((resolve) => {
