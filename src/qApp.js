@@ -67,8 +67,8 @@ const qApp = async (config) => {
     });
     return new Promise((resolve) => {
       window.require(['js/qlik'], (qlik) => {
-        console.log('Applying theme breeze');
-        qlik.theme.apply('breeze').then(result => console.log('Theme apply result', result));
+        console.log('Applying theme theme-sievo');
+        qlik.theme.apply('theme-sievo').then(result => console.log('Theme apply result', result));
 
         const app = qlik.openApp(config.appId, { ...config, isSecure: config.secure, prefix });
         app.qlik = qlik;
