@@ -132,7 +132,6 @@ export default class QdtViz extends React.Component {
     if (this.state.error) {
       return <div>{this.state.error.message}</div>;
     } else if (this.state.loading) {
-      //   return <div>Loading...</div>;
       const paddingTop = parseInt(height, 0) ? height / 2 - 10 : 0;
       return <Preloader width={width} height={height} paddingTop={paddingTop} />;
     }
