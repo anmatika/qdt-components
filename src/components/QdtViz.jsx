@@ -1,6 +1,7 @@
 /* eslint no-console: 0, no-mixed-operators: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
+import PubSub from 'pubsub-js';
 import Preloader from '../utilities/Preloader';
 
 export default class QdtViz extends React.Component {
@@ -47,7 +48,7 @@ export default class QdtViz extends React.Component {
 
   constructor(props) {
     super(props);
-
+    PubSub.subscribe('QdtViz.close', this.closeSubscriber.bind(this));
     this.state = {
       loading: true,
       error: null,
@@ -80,6 +81,11 @@ export default class QdtViz extends React.Component {
     } catch (error) {
       this.setState({ error });
     }
+  }
+
+  closeSubscriber() {
+    console.log('closing viz');
+    this.close();
   }
 
   async create() {

@@ -1,6 +1,6 @@
 {
   "name": "qdt-components",
-  "version": "1.1.71",
+  "version": "1.1.72",
   "description": "Qlik Demo Team Components",
   "main": "dist/qdt-components.js",
   "author": "The Demo Team",
@@ -21,6 +21,7 @@
     "picasso-plugin-q": "^0.7.0",
     "picasso.js": "^0.7.0",
     "prop-types": "^15.6.0",
+    "pubsub-js": "^1.6.0",
     "qdt-lui": "0.0.24",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
