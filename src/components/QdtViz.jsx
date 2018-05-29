@@ -48,7 +48,7 @@ export default class QdtViz extends React.Component {
 
   constructor(props) {
     super(props);
-    PubSub.subscribe('QdtViz.close', this.closeSubscriber.bind(this));
+    PubSub.subscribe('QdtViz.close', this.closeSubscriber);
     this.state = {
       loading: true,
       error: null,
@@ -83,8 +83,9 @@ export default class QdtViz extends React.Component {
     }
   }
 
-  closeSubscriber() {
+  closeSubscriber(msg, data) {
     console.log('closing viz');
+    console.log(msg, data);
     this.close();
   }
 
