@@ -15,7 +15,15 @@ import QdtSearch from './components/QdtSearch';
 import QdtCurrentSelections from './components/QdtCurrentSelections';
 
 const components = {
-  QdtFilter, QdtTable, QdtViz, QdtSelectionToolbar, QdtKpi, QdtButton, QdtPicasso, QdtSearch, QdtCurrentSelections,
+  QdtFilter,
+  QdtTable,
+  QdtViz,
+  QdtSelectionToolbar,
+  QdtKpi,
+  QdtButton,
+  QdtPicasso,
+  QdtSearch,
+  QdtCurrentSelections,
 };
 
 const QdtComponents = class {
@@ -24,29 +32,43 @@ const QdtComponents = class {
   };
 
   constructor(config = {}, connections = { vizApi: true, engineApi: true }) {
-    const myConfig = config;
-    myConfig.identity = utility.uid(16);
-    this.qAppPromise = (connections.vizApi) ? qApp(myConfig) : null;
-    this.qDocPromise = (connections.engineApi) ? qDoc(myConfig) : null;
+    this.myConfig = config;
+    this.myConfig.identity = utility.uid(16);
+    this.qAppPromise = connections.vizApi ? qApp(this.myConfig) : null;
+    this.qDocPromise = connections.engineApi ? qDoc(this.myConfig) : null;
+    this.connections = connections;
   }
 
-  render = async (type, props, element) => new Promise((resolve, reject) => {
-    try {
-      const { qAppPromise, qDocPromise } = this;
-      const Component = components[type];
-      ReactDOM.render(
-        <Component
-          {...props}
-          qAppPromise={qAppPromise}
-          qDocPromise={qDocPromise}
-          ref={node => resolve(node)}
-        />,
-        element,
-      );
-    } catch (error) {
-      reject(error);
-    }
-  });
+  async componentDidMount() {
+    this.qDocPromise = this.connections.engineApi ? this.qSessionPromise(this.myConfig) : null;
+  }
+
+  close() {
+    console.log('QdtComponents.close called.');
+    this.node.close();
+  }
+
+  render = async (type, props, element) =>
+    new Promise((resolve, reject) => {
+      try {
+        const { qAppPromise, qDocPromise } = this;
+        const Component = components[type];
+        ReactDOM.render(
+          <Component
+            {...props}
+            qAppPromise={qAppPromise}
+            qDocPromise={qDocPromise}
+            ref={(node) => {
+              this.node = node;
+              return resolve(this.node);
+            }}
+          />,
+          element,
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
 };
 
 export default QdtComponents;
