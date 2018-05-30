@@ -39,10 +39,6 @@ const QdtComponents = class {
     this.connections = connections;
   }
 
-  async componentDidMount() {
-    this.qDocPromise = this.connections.engineApi ? this.qSessionPromise(this.myConfig) : null;
-  }
-
   close() {
     console.log('QdtComponents.close called.');
     this.node.close();
@@ -53,6 +49,7 @@ const QdtComponents = class {
       try {
         const { qAppPromise, qDocPromise } = this;
         const Component = components[type];
+        console.log('QdtComponents.render called');
         ReactDOM.render(
           <Component
             {...props}
