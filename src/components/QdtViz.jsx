@@ -120,7 +120,6 @@ export default class QdtViz extends React.Component {
   async close() {
     try {
       const qViz = await this.qVizPromise;
-      console.log('QdtViz.close called.', qViz);
       qViz.close();
     } catch (error) {
       this.setState({ error });

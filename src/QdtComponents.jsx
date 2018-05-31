@@ -40,7 +40,6 @@ const QdtComponents = class {
   }
 
   close() {
-    console.log('QdtComponents.close called.', this.node);
     this.node.close();
   }
 
@@ -49,7 +48,6 @@ const QdtComponents = class {
       try {
         const { qAppPromise, qDocPromise } = this;
         const Component = components[type];
-        console.log('QdtComponents.render called');
         ReactDOM.render(
           <Component
             {...props}
