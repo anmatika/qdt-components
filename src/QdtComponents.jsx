@@ -40,7 +40,7 @@ const QdtComponents = class {
   }
 
   close() {
-    console.log('QdtComponents.close called.');
+    console.log('QdtComponents.close called.', this.node);
     this.node.close();
   }
 
